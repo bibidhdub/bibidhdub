@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ready?</title>
+</head>
+<body>
+	<div id="words"></div>
+	<div id="type">
+		<input type="textbox" id="textbox" name="textbox" onkeypress="check_space()">
+	</div>
+	<div id="typed">
+		Your text Here<br>
+	</div>
+	<div id="timer">
+		
+	</div>
+	<div id="times_up">
+		
+	</div>
+	<div id="result">
+		
+	</div>
+	<script type="text/javascript">
+
+		var user_typed=[];
+		var words_got=[];
+		getWords();
+		var check=0;
+		
+		function getWords()
+		{
+			var wors=["cheek","story","bonus","union","owner","power","piano","skill","topic","tooth","error","truth","media","night","virus","honey","event","child","pizza","guest","photo","depth","scene","buyer","shirt","entry","basis","river","death","queen","youth","uncle","blood","drama","steak","chest","phone","woman","thing","music","bread","movie","actor","apple","world","ratio","video","hotel","month","heart","role","tale","hair","soup","debt","disk","desk","unit","lake","girl","year","mode","meal","poem","cell","user","poet","dirt","hall","oven","idea","gate","bird","goal","menu","song","area","bath","meat","army","news","gene","loss","love","king","mood","week","food","lady","road","town","city","math","wood","beer","wife","exam","mall","fact","data"];
+			for (var i=0;i<50;i++)
+			{
+				var rand_num = Math.floor(Math.random() * 101);
+				document.getElementById("words").innerHTML+=wors[rand_num]+" ";
+				words_got.push(wors[rand_num]);
+			}
+		}""
+
+		function check_space()
+		{
+			window.addEventListener("keydown", checkKeyPressed, false);
+		}
+
+		function checkKeyPressed(event)
+		{
+		    if (event.keyCode == "32")
+		    {
+		    	var text = document.querySelector('input').value;
+		    	document.getElementById("typed").innerHTML+=text;
+		    	document.querySelector('input').value="";
+		    	if(user_typed.length==0)
+		    		{
+		    			user_typed.push(text);
+		    		}
+	    		else{
+	    				user_typed.push(text.slice(1,text.length));
+		    		}
+		    }
+		    if (event)
+		    {
+		    	if (check==0)
+		    	{
+		    		window.x = setInterval(getTimeEverySecond,1000);
+		    		check++;
+		    		window.current=new Date();
+		    	}
+		    }		    
+		}
+
+		var counter=0;
+		//var x = setInterval(getTimeEverySecond,1000);
+
+		function getTimeEverySecond()
+		{
+			var now=new Date();
+			counter+=1;
+			document.getElementById("timer").innerHTML=counter;
+			if (now.getTime()>=window.current.getTime()+5000)
+			{
+				document.getElementById("times_up").innerHTML+="TimesUp";
+				document.getElementById("textbox").disabled = true;
+				clearInterval(window.x);
+				get_result();
+			}
+
+		}
+		
+
+		// To check WPM and stuff
+		function get_result()
+			{
+				console.log(words_got);
+				console.log(user_typed);
+				var correct_words=0;
+				for(var i=0;i<user_typed.length;i++)
+				{
+					if(user_typed[i]==words_got[i])
+					{
+						correct_words+=1;
+					}
+				}
+		
+				document.getElementById("result").innerHTML="Total correct words were : "+correct_words+"<br>";
+				document.getElementById("result").innerHTML+="Your Word Per Minute was : "+((correct_words/5)*60);
+			}
+
+	</script>
+</body>
+</html>
